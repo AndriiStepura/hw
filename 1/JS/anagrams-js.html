@@ -5,14 +5,30 @@
     <title>Section 1 - Question 1</title>
 
     <script>
-        function isAnagramsV1 (str1, str2){
+        function isAnagramsV1(str1, str2){
             return false;
         }
 
-        function isAnagramsV2 (str1, str2){
+        function isAnagramsV2(str1, str2){
             return false;
         }
 
+        function runVerification(){
+            
+            var allStr1 = document.getElementsByClassName("str1").length;
+            for (var i = 1; i<=allStr1; i++){
+                var str1 = document.getElementById("srt1-"+i).value;
+                var str2 = document.getElementById("srt2-"+i).value;
+
+                if (parseInt(document.getElementById("isCaseSensitive").elements["isCaseSensitive"].value) == 1) {
+                    var str1 = str1.toLowerCase();
+                    var str2 = str2.toLowerCase();
+                };
+                
+                console.log(str1);
+                console.log(str2);
+            }
+        }
     </script>
 
     <style>
@@ -64,6 +80,15 @@
   </head>
   <body>
 
+    <form id="isCaseSensitive">
+        Is verification for anagram must be case sensitive?
+        <input type="radio" name="isCaseSensitive" value="0" onchange="runVerification()" checked> No 
+        <input type="radio" name="isCaseSensitive" value="1" onchange="runVerification()"> Yes
+        <input type="button" name="submit" value="Verify strings" onclick="runVerification();">
+    </form>
+
+    <hr>
+
     <table class="table">
         <thead>
             <tr>
@@ -104,6 +129,14 @@
                 <td><div id="result1-5" class="result1"></div></td>
                 <td><div id="result2-5" class="result2"></div></td>
             </tr>
+
+            <tr>
+                    <td><input type="text" id="srt1-6" class="str1" value="abc"></td>
+                    <td><input type="text" id="srt2-6" class="str2" value="aBc"></td>
+                    <td><div id="result1-6" class="result1"></div></td>
+                    <td><div id="result2-6" class="result2"></div></td>
+            </tr>
+
         </tbody>
     </table>
 
