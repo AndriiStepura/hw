@@ -27,11 +27,26 @@
         }
 
         function isAnagramsV2(str1, str2){
-            return false;
+            if(str1.length == str2.length){
+                let reg;                
+                while (str1.length > 0){
+                    reg = new RegExp(str1[0],"g");
+                    if ( !str2.match(reg) || str1.match(reg).length != str2.match(reg).length){
+                        return false;
+                    }
+                    else {
+                        str1 = str1.replace(reg, "");
+                    }
+                }
+                return true;
+            }
+            else{
+                return false;
+            }
         }
 
         function runVerification(){
-            
+
             var allStr1 = document.getElementsByClassName("str1").length;
             for (var i = 1; i<=allStr1; i++){
                 var str1 = document.getElementById("srt1-"+i).value;
@@ -57,8 +72,18 @@
                 }
 
                 // Display V2 results
-                document.getElementById("result2-"+i).innerText = isAnagramsV2(str1,str2);
-
+                switch (isAnagramsV2(str1,str2)){
+                    case true:
+                        document.getElementById("result2-"+i).innerText = "TRUE THEY ARE ANAGRAMS";
+                        document.getElementById("result2-"+i).style.color = "#42cc42";
+                        break;
+                    case false:
+                        document.getElementById("result2-"+i).innerText = "FALSE they are NOT anagrams";
+                        document.getElementById("result2-"+i).style.color = "#FF0000";
+                        break;
+                    default: 
+                        document.getElementById("result2-"+i).innerText = "unknown";
+                }
             }
         }
     </script>
