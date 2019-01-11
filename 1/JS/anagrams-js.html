@@ -6,7 +6,24 @@
 
     <script>
         function isAnagramsV1(str1, str2){
-            return false;
+            if(str1.length == str2.length){
+                str1 = str1.split("");
+                str2 = str2.split("");
+                
+                str1.sort();
+                str2.sort();
+
+                for(let i = 0; i<str1.length; i++){
+                    if (str1[i] != str2[i]){
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            else{
+                return false;
+            }
         }
 
         function isAnagramsV2(str1, str2){
@@ -25,8 +42,23 @@
                     var str2 = str2.toLowerCase();
                 };
                 
-                console.log(str1);
-                console.log(str2);
+                // Display V1 results
+                switch (isAnagramsV1(str1,str2)){
+                    case true:
+                        document.getElementById("result1-"+i).innerText = "TRUE THEY ARE ANAGRAMS";
+                        document.getElementById("result1-"+i).style.color = "#42cc42";
+                        break;
+                    case false:
+                        document.getElementById("result1-"+i).innerText = "FALSE they are NOT anagrams";
+                        document.getElementById("result1-"+i).style.color = "#FF0000";
+                        break;
+                    default: 
+                        document.getElementById("result1-"+i).innerText = "unknown";
+                }
+
+                // Display V2 results
+                document.getElementById("result2-"+i).innerText = isAnagramsV2(str1,str2);
+
             }
         }
     </script>
@@ -129,7 +161,6 @@
                 <td><div id="result1-5" class="result1"></div></td>
                 <td><div id="result2-5" class="result2"></div></td>
             </tr>
-
             <tr>
                     <td><input type="text" id="srt1-6" class="str1" value="abc"></td>
                     <td><input type="text" id="srt2-6" class="str2" value="aBc"></td>
