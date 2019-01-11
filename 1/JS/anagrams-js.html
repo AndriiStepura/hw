@@ -37,7 +37,7 @@
                 var str1 = document.getElementById("srt1-"+i).value;
                 var str2 = document.getElementById("srt2-"+i).value;
 
-                if (parseInt(document.getElementById("isCaseSensitive").elements["isCaseSensitive"].value) == 1) {
+                if (parseInt(document.getElementById("isCaseSensitive").elements["isCaseSensitive"].value) == 0) {
                     var str1 = str1.toLowerCase();
                     var str2 = str2.toLowerCase();
                 };
@@ -114,7 +114,7 @@
 
     <form id="isCaseSensitive">
         Is verification for anagram must be case sensitive?
-        <input type="radio" name="isCaseSensitive" value="0" onchange="runVerification()" checked> No 
+        <input type="radio" name="isCaseSensitive" value="0" onchange="runVerification()" checked> No
         <input type="radio" name="isCaseSensitive" value="1" onchange="runVerification()"> Yes
         <input type="button" name="submit" value="Verify strings" onclick="runVerification();">
     </form>
@@ -162,12 +162,17 @@
                 <td><div id="result2-5" class="result2"></div></td>
             </tr>
             <tr>
-                    <td><input type="text" id="srt1-6" class="str1" value="abc"></td>
-                    <td><input type="text" id="srt2-6" class="str2" value="aBc"></td>
-                    <td><div id="result1-6" class="result1"></div></td>
-                    <td><div id="result2-6" class="result2"></div></td>
+                <td><input type="text" id="srt1-6" class="str1" value="abc"></td>
+                <td><input type="text" id="srt2-6" class="str2" value="aBc"></td>
+                <td><div id="result1-6" class="result1"></div></td>
+                <td><div id="result2-6" class="result2"></div></td>
             </tr>
-
+            <tr>
+                <td><input type="text" id="srt1-7" class="str1" value="a c-b"></td>
+                <td><input type="text" id="srt2-7" class="str2" value="-a bc"></td>
+                <td><div id="result1-7" class="result1"></div></td>
+                <td><div id="result2-7" class="result2"></div></td>
+            </tr>
         </tbody>
     </table>
 
