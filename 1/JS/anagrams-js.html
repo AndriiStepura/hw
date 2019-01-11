@@ -5,6 +5,7 @@
     <title>Section 1 - Question 1</title>
 
     <script>
+
         function isAnagramsV1(str1, str2){
             if(str1.length == str2.length){
                 str1 = str1.split("");
@@ -26,6 +27,7 @@
             }
         }
 
+
         function isAnagramsV2(str1, str2){
             if(str1.length == str2.length){
                 let reg;                
@@ -45,8 +47,8 @@
             }
         }
 
-        function runVerification(){
 
+        function runVerification(){
             var allStr1 = document.getElementsByClassName("str1").length;
             for (var i = 1; i<=allStr1; i++){
                 var str1 = document.getElementById("srt1-"+i).value;
@@ -58,34 +60,45 @@
                 };
                 
                 // Display V1 results
-                switch (isAnagramsV1(str1,str2)){
-                    case true:
-                        document.getElementById("result1-"+i).innerText = "TRUE THEY ARE ANAGRAMS";
-                        document.getElementById("result1-"+i).style.color = "#42cc42";
-                        break;
-                    case false:
-                        document.getElementById("result1-"+i).innerText = "FALSE they are NOT anagrams";
-                        document.getElementById("result1-"+i).style.color = "#FF0000";
-                        break;
-                    default: 
-                        document.getElementById("result1-"+i).innerText = "unknown";
-                }
+                printResults(1,i,str1,str2);
 
                 // Display V2 results
-                switch (isAnagramsV2(str1,str2)){
-                    case true:
-                        document.getElementById("result2-"+i).innerText = "TRUE THEY ARE ANAGRAMS";
-                        document.getElementById("result2-"+i).style.color = "#42cc42";
-                        break;
-                    case false:
-                        document.getElementById("result2-"+i).innerText = "FALSE they are NOT anagrams";
-                        document.getElementById("result2-"+i).style.color = "#FF0000";
-                        break;
-                    default: 
-                        document.getElementById("result2-"+i).innerText = "unknown";
-                }
+                printResults(2,i,str1,str2);
             }
         }
+
+
+        function printResults(shoseV,caseId,str1,str2){
+            let result;
+            switch (shoseV){ 
+                case 1:
+                    result = isAnagramsV1(str1,str2);
+                    break;
+
+                case false:
+                    result = isAnagramsV2(str1,str2);
+                    break;
+
+                default: 
+                    result = isAnagramsV1(str1,str2);
+            }
+
+            switch (result){
+                    case true:
+                        document.getElementById("result"+shoseV+"-"+caseId).innerText = "TRUE THEY ARE ANAGRAMS";
+                        document.getElementById("result"+shoseV+"-"+caseId).style.color = "#42cc42";
+                        break;
+
+                    case false:
+                        document.getElementById("result"+shoseV+"-"+caseId).innerText = "FALSE they are NOT anagrams";
+                        document.getElementById("result"+shoseV+"-"+caseId).style.color = "#FF0000";
+                        break;
+
+                    default: 
+                        document.getElementById("result"+shoseV+"-"+caseId).innerText = "unknown";
+            }
+        }
+
     </script>
 
     <style>
