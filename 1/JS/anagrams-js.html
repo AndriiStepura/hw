@@ -49,14 +49,14 @@
 
 
         function runVerification(){
-            var allStr1 = document.getElementsByClassName("str1").length;
-            for (var i = 1; i<=allStr1; i++){
-                var str1 = document.getElementById("srt1-"+i).value;
-                var str2 = document.getElementById("srt2-"+i).value;
+            let allStr1 = document.getElementsByClassName("str1").length;
+            for (let i = 1; i<=allStr1; i++){
+                let str1 = document.getElementById("srt1-"+i).value;
+                let str2 = document.getElementById("srt2-"+i).value;
 
                 if (parseInt(document.getElementById("isCaseSensitive").elements["isCaseSensitive"].value) == 0) {
-                    var str1 = str1.toLowerCase();
-                    var str2 = str2.toLowerCase();
+                    str1 = str1.toLowerCase();
+                    str2 = str2.toLowerCase();
                 };
                 
                 // Display V1 results
@@ -99,6 +99,50 @@
             }
         }
 
+        function comparePerformance(){
+            if (!document.getElementById("perfV1-0")){
+                tbl = document.getElementsByTagName("body")[0];
+                tr = tbl.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    let td1 = document.createElement('td');
+                    let td2 = document.createElement('td');
+                    if (i == 0) td1 = document.createElement('th');
+                    if (i == 0) td2 = document.createElement('th');
+                    let perfDivV1 = document.createElement('div');
+                    let perfDivV2 = document.createElement('div');
+                    perfDivV1.setAttribute("id", "perfV1-"+i);
+                    perfDivV2.setAttribute("id", "perfV2-"+i);
+                    td1.appendChild(perfDivV1);
+                    td2.appendChild(perfDivV2);
+                    tr[i].appendChild(td1);
+                    tr[i].appendChild(td2);
+                }
+                document.getElementById("perfV1-0").innerText = "V1";
+                document.getElementById("perfV2-0").innerText = "V2";
+            }
+
+            for (i = 1; i < tr.length; i++) {
+                let str1 = document.getElementById("srt1-"+i).value;
+                let str2 = document.getElementById("srt2-"+i).value;
+
+                let start = new Date();
+                let runs = parseInt(document.getElementById("perfRuns").value);
+                while (runs) {
+                    isAnagramsV1(str1,str2);
+                    runs--;
+                }
+                document.getElementById("perfV1-"+i).innerText = new Date() - start + "ms";
+
+                start = new Date();
+                runs = parseInt(document.getElementById("perfRuns").value);
+                while (runs) {
+                    isAnagramsV1(str1,str2);
+                    runs--;
+                }
+                document.getElementById("perfV2-"+i).innerText = new Date() - start + "ms";
+            }
+            
+        }
     </script>
 
     <style>
@@ -145,6 +189,47 @@
         padding: 2px 8px;
         border-radius: 5px;
         }
+
+        .myButton {
+            -moz-box-shadow: 0px 1px 0px 0px #fff6af;
+            -webkit-box-shadow: 0px 1px 0px 0px #fff6af;
+            box-shadow: 0px 1px 0px 0px #fff6af;
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffec64), color-stop(1, #ffab23));
+            background:-moz-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+            background:-webkit-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+            background:-o-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+            background:-ms-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+            background:linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffec64', endColorstr='#ffab23',GradientType=0);
+            background-color:#ffec64;
+            -moz-border-radius:6px;
+            -webkit-border-radius:6px;
+            border-radius:6px;
+            border:1px solid #ffaa22;
+            display:inline-block;
+            cursor:pointer;
+            color:#333333;
+            font-family:Arial;
+            font-size:15px;
+            font-weight:bold;
+            padding:6px 24px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #ffee66;
+        }
+        .myButton:hover {
+            background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffab23), color-stop(1, #ffec64));
+            background:-moz-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+            background:-webkit-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+            background:-o-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+            background:-ms-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+            background:linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffab23', endColorstr='#ffec64',GradientType=0);
+            background-color:#ffab23;
+        }
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
     </style>
 
   </head>
@@ -154,7 +239,7 @@
         Is verification for anagram must be case sensitive?
         <input type="radio" name="isCaseSensitive" value="0" onchange="runVerification()" checked> No
         <input type="radio" name="isCaseSensitive" value="1" onchange="runVerification()"> Yes
-        <input type="button" name="submit" value="Verify strings" onclick="runVerification();">
+        <input type="button" name="submit" class="myButton" value="Verify strings" onclick="runVerification();">
     </form>
 
     <hr>
@@ -162,8 +247,8 @@
     <table class="table">
         <thead>
             <tr>
-            <th width="20%">String 1</th>
-            <th width="20%">String 2</th>
+            <th>String 1</th>
+            <th>String 2</th>
             <th width="30%">Result v1</th>
             <th width="30%">Result v2</th>
             </tr>
@@ -213,6 +298,10 @@
             </tr>
         </tbody>
     </table>
+
+    <hr>
+    <input type="button" class="myButton" id="perfButton" name="submit" value="Compare V1 vs V2 performance" onclick="comparePerformance();">
+    with <input type="number" id="perfRuns" name="perfRuns" value="10000"> times functions triggering
 
   </body>
 </html>
