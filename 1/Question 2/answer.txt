@@ -1,0 +1,3 @@
+Line 8 is redundant, we do not need "new String" and new variable also, we can use the existing variable "name"
+If the if statement is true line 10 executed but not change anything, just redundantly overwrite variable "name" with the same value. 
+Line 13 is called when if was false (given parameter other than "hostleworld") and recursively call again and again this method without any changes in the parameter, so we fall in a non-ended loop (with Exception in thread "main" java.lang.StackOverflowError).
