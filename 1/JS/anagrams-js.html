@@ -64,6 +64,8 @@
 
                 // Display V2 results
                 printResults(2,i,str1,str2);
+
+                changeButtonAviability("verifyButton", 0);
             }
         }
 
@@ -141,7 +143,14 @@
                 }
                 document.getElementById("perfV2-"+i).innerText = new Date() - start + "ms";
             }
-            
+        }
+
+        function changeButtonAviability(btnId, sattement){
+            sattement == 0 ? document.getElementById(btnId).disabled = true : document.getElementById(btnId).disabled = false;
+        }
+
+        function mva(){
+            changeButtonAviability("verifyButton", 1);
         }
     </script>
 
@@ -230,6 +239,10 @@
             position:relative;
             top:1px;
         }
+        .myButton:disabled {
+            opacity: 0.5;
+            cursor: no-drop;
+        }
     </style>
 
   </head>
@@ -239,7 +252,7 @@
         Is verification for anagram must be case sensitive?
         <input type="radio" name="isCaseSensitive" value="0" onchange="runVerification()" checked> No
         <input type="radio" name="isCaseSensitive" value="1" onchange="runVerification()"> Yes
-        <input type="button" name="submit" class="myButton" value="Verify strings" onclick="runVerification();">
+        <input type="button" name="submit" class="myButton" id="verifyButton" value="Verify strings" onclick="runVerification();">
     </form>
 
     <hr>
@@ -255,44 +268,44 @@
         </thead>
         <tbody>
             <tr>
-                <td><input type="text" id="srt1-1" class="str1" value="Punishment"></td>
-                <td><input type="text" id="srt2-1" class="str2" value="Nine Thumps"></td>
+                <td><input type="text" id="srt1-1" class="str1" onchange="mva()" onKeyUp="mva()" value="Punishment"></td>
+                <td><input type="text" id="srt2-1" class="str2" onchange="mva()" onKeyUp="mva()" value="Nine Thumps"></td>
                 <td><div id="result1-1" class="result1"></div></td>
                 <td><div id="result2-1" class="result2"></div></td>
             </tr>
             <tr>
-                <td><input type="text" id="srt1-2" class="str1" value="The Morse code"></td>
-                <td><input type="text" id="srt2-2" class="str2" value="Here come dots"></td>
+                <td><input type="text" id="srt1-2" class="str1" onchange="mva()" onKeyUp="mva()" value="The Morse code"></td>
+                <td><input type="text" id="srt2-2" class="str2" onchange="mva()" onKeyUp="mva()" value="Here come dots"></td>
                 <td><div id="result1-2" class="result1"></div></td>
                 <td><div id="result2-2" class="result2"></div></td>
             </tr>
             <tr>
-                <td><input type="text" id="srt1-3" class="str1" value="Snooze alarms"></td>
-                <td><input type="text" id="srt2-3" class="str2" value="Alas! No more Zs"></td>
+                <td><input type="text" id="srt1-3" class="str1" onchange="mva()" onKeyUp="mva()" value="Snooze alarms"></td>
+                <td><input type="text" id="srt2-3" class="str2" onchange="mva()" onKeyUp="mva()" value="Alas! No more Zs"></td>
                 <td><div id="result1-3" class="result1"></div></td>
                 <td><div id="result2-3" class="result2"></div></td>
             </tr>
             <tr>
-                <td><input type="text" id="srt1-4" class="str1" value="Halley's Comet"></td>
-                <td><input type="text" id="srt2-4" class="str2" value="Shall yet come"></td>
+                <td><input type="text" id="srt1-4" class="str1" onchange="mva()" onKeyUp="mva()" value="Halley's Comet"></td>
+                <td><input type="text" id="srt2-4" class="str2" onchange="mva()" onKeyUp="mva()" value="Shall yet come"></td>
                 <td><div id="result1-4" class="result1"></div></td>
                 <td><div id="result2-4" class="result2"></div></td>
             </tr>
             <tr>
-                <td><input type="text" id="srt1-5" class="str1" value="One good turn deserves another."></td>
-                <td><input type="text" id="srt2-5" class="str2" value="Do rogues endorse that? No,never!"></td>
+                <td><input type="text" id="srt1-5" class="str1" onchange="mva()" onKeyUp="mva()" value="One good turn deserves another."></td>
+                <td><input type="text" id="srt2-5" class="str2" onchange="mva()" onKeyUp="mva()" value="Do rogues endorse that? No,never!"></td>
                 <td><div id="result1-5" class="result1"></div></td>
                 <td><div id="result2-5" class="result2"></div></td>
             </tr>
             <tr>
-                <td><input type="text" id="srt1-6" class="str1" value="abc"></td>
-                <td><input type="text" id="srt2-6" class="str2" value="aBc"></td>
+                <td><input type="text" id="srt1-6" class="str1" onchange="mva()" onKeyUp="mva()" value="abc"></td>
+                <td><input type="text" id="srt2-6" class="str2" onchange="mva()" onKeyUp="mva()" value="aBc"></td>
                 <td><div id="result1-6" class="result1"></div></td>
                 <td><div id="result2-6" class="result2"></div></td>
             </tr>
             <tr>
-                <td><input type="text" id="srt1-7" class="str1" value="a c-b"></td>
-                <td><input type="text" id="srt2-7" class="str2" value="-a bc"></td>
+                <td><input type="text" id="srt1-7" class="str1" onchange="mva()" onKeyUp="mva()" value="a c-b"></td>
+                <td><input type="text" id="srt2-7" class="str2" onchange="mva()" onKeyUp="mva()" value="-a bc"></td>
                 <td><div id="result1-7" class="result1"></div></td>
                 <td><div id="result2-7" class="result2"></div></td>
             </tr>
@@ -300,7 +313,7 @@
     </table>
 
     <hr>
-    <input type="button" class="myButton" id="perfButton" name="submit" value="Compare V1 vs V2 performance" onclick="comparePerformance();">
+    <input type="button" class="myButton" id="perfButton" name="submit" value="Compare V1 vs V2" onclick="comparePerformance();">
     with <input type="number" id="perfRuns" name="perfRuns" value="10000"> times functions triggering
 
   </body>
