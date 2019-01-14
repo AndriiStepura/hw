@@ -1,0 +1,676 @@
+{
+	"info": {
+		"_postman_id": "e8c70ee5-77af-4bf1-9312-c663dddb4eb2",
+		"name": "GitHubGists",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user gists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2eedfdb1-b42e-42eb-9e85-5ba185a5131b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status code name has string OK\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"// If you will test with new user without gists it's have sense:",
+							"// tests[\"Response with no gists\"] = responseBody === \"[]\";",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"listResponseWithGist0\", jsonData);",
+							"pm.environment.set(\"startGistsCount\", jsonData.length);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/users/{{userLogin}}/gists",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{userLogin}}",
+						"gists"
+					]
+				},
+				"description": "GET user gists"
+			},
+			"response": []
+		},
+		{
+			"name": "add gist1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fefa5a1a-634b-490f-9bca-d40de89aee82",
+						"exec": [
+							"pm.test(\"Gist created and status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"// save gist1 ID",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"gist1id\", jsonData.id);",
+							"",
+							"pm.test(\"URL to gist1 correct format\", function () {",
+							"    pm.expect(jsonData.url).to.eql(\"https://api.github.com/gists/\"+jsonData.id);",
+							"});",
+							"",
+							"pm.test(\"Forks URL to gist1 correct format\", function () {",
+							"    pm.expect(jsonData.forks_url).to.eql(\"https://api.github.com/gists/\"+jsonData.id+\"/forks\");",
+							"});",
+							"",
+							"pm.test(\"Commits URL to gist1 correct format\", function () {",
+							"    pm.expect(jsonData.commits_url).to.eql(\"https://api.github.com/gists/\"+jsonData.id+\"/commits\");",
+							"});",
+							"",
+							"pm.test(\"Owner correct\", function () {",
+							"    pm.expect(jsonData.owner.login).to.eql(environment.userLogin);",
+							"});",
+							"",
+							"pm.test(\"Files correct\", function () {",
+							"    pm.expect(jsonData.files.fileName.filename).to.eql(\"fileName\");",
+							"});",
+							"",
+							"pm.test(\"Files content correct\", function () {",
+							"    pm.expect(jsonData.files.fileName.content).to.eql(\"Test API content\");",
+							"});",
+							"",
+							"pm.test(\"Description correct\", function () {",
+							"    pm.expect(jsonData.description).to.eql(\"Hello World Examples\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Hello World Examples\",\r\n  \"public\": true,\r\n  \"files\": {\r\n    \"fileName\": {\r\n      \"content\": \"Test API content\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "https://api.github.com/gists",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user gists after creation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e57a85d5-3e3d-41e9-a0de-c3506d5d338b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Created gist1 available in get list\", function () {",
+							"    pm.expect(jsonData[0].id).to.eql(environment.gist1id);",
+							"});",
+							"",
+							"pm.test(\"Created gist1 available in get list\", function () {",
+							"    pm.expect(jsonData[0].public).to.eql(true);",
+							"});",
+							"",
+							"pm.test(\"URL to gist1 correct format\", function () {",
+							"    pm.expect(jsonData[0].url).to.eql(\"https://api.github.com/gists/\"+jsonData[0].id);",
+							"});",
+							"",
+							"pm.test(\"Forks URL to gist1 correct format\", function () {",
+							"    pm.expect(jsonData[0].forks_url).to.eql(\"https://api.github.com/gists/\"+jsonData[0].id+\"/forks\");",
+							"});",
+							"",
+							"pm.test(\"Commits URL to gist1 correct format\", function () {",
+							"    pm.expect(jsonData[0].commits_url).to.eql(\"https://api.github.com/gists/\"+jsonData[0].id+\"/commits\");",
+							"});",
+							"",
+							"pm.test(\"Owner correct\", function () {",
+							"    pm.expect(jsonData[0].owner.login).to.eql(environment.userLogin);",
+							"});",
+							"",
+							"pm.test(\"Files correct\", function () {",
+							"    pm.expect(jsonData[0].files.fileName.filename).to.eql(\"fileName\");",
+							"});",
+							"",
+							"pm.test(\"Description correct\", function () {",
+							"    pm.expect(jsonData[0].description).to.eql(\"Hello World Examples\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/users/{{userLogin}}/gists",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{userLogin}}",
+						"gists"
+					]
+				},
+				"description": "GET user gists"
+			},
+			"response": []
+		},
+		{
+			"name": "add gist2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fefa5a1a-634b-490f-9bca-d40de89aee82",
+						"exec": [
+							"pm.test(\"Gist created and status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"// save gist1 ID",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"gist2id\", jsonData.id);",
+							"",
+							"pm.test(\"URL to gist2 correct format\", function () {",
+							"    pm.expect(jsonData.url).to.eql(\"https://api.github.com/gists/\"+jsonData.id);",
+							"});",
+							"",
+							"pm.test(\"Forks URL to gist2 correct format\", function () {",
+							"    pm.expect(jsonData.forks_url).to.eql(\"https://api.github.com/gists/\"+jsonData.id+\"/forks\");",
+							"});",
+							"",
+							"pm.test(\"Commits URL to gist2 correct format\", function () {",
+							"    pm.expect(jsonData.commits_url).to.eql(\"https://api.github.com/gists/\"+jsonData.id+\"/commits\");",
+							"});",
+							"",
+							"pm.test(\"Owner correct\", function () {",
+							"    pm.expect(jsonData.owner.login).to.eql(environment.userLogin);",
+							"});",
+							"",
+							"pm.test(\"Files correct\", function () {",
+							"    pm.expect(jsonData.files.hello_txt.filename).to.eql(\"hello_txt\");",
+							"});",
+							"",
+							"pm.test(\"Files content correct\", function () {",
+							"    pm.expect(jsonData.files.hello_txt.content).to.eql(\"Second gist content\");",
+							"});",
+							"",
+							"pm.test(\"Description correct\", function () {",
+							"    pm.expect(jsonData.description).to.eql(\"Second gist\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Second gist\",\r\n  \"public\": false,\r\n  \"files\": {\r\n    \"hello_txt\": {\r\n      \"content\": \"Second gist content\"\r\n    }\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "https://api.github.com/gists",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user gists after creation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e57a85d5-3e3d-41e9-a0de-c3506d5d338b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Created gist2 available in get list and listed before older\", function () {",
+							"    pm.expect(jsonData[0].id).to.eql(environment.gist2id);",
+							"});",
+							"",
+							"pm.test(\"Created gist2 public is false\", function () {",
+							"    pm.expect(jsonData[0].public).to.eql(false);",
+							"});",
+							"",
+							"pm.test(\"Created gist1 available in get list\", function () {",
+							"    pm.expect(jsonData[1].id).to.eql(environment.gist1id);",
+							"});",
+							"",
+							"pm.test(\"Created gist1 public is true\", function () {",
+							"    pm.expect(jsonData[1].public).to.eql(true);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/users/{{userLogin}}/gists",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{userLogin}}",
+						"gists"
+					]
+				},
+				"description": "GET user gists"
+			},
+			"response": []
+		},
+		{
+			"name": "delete gist1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e698e499-9bd7-4ca9-ae84-7191e456d749",
+						"exec": [
+							"pm.test(\"Gist deleted and status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/gists/{{gist1id}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists",
+						"{{gist1id}}"
+					]
+				},
+				"description": "GET user gists"
+			},
+			"response": []
+		},
+		{
+			"name": "user gists after delete first",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ca33b014-8f5f-4863-9a0c-bfa9f72ee16e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"listResponseWithGist2\", jsonData);",
+							"",
+							"pm.test(\"Created gist2 available in get list\", function () {",
+							"    pm.expect(jsonData[0].id).to.eql(environment.gist2id);",
+							"});",
+							"",
+							"pm.test(\"Created gist2 public is false\", function () {",
+							"    pm.expect(jsonData[0].public).to.eql(false);",
+							"});",
+							"",
+							"pm.test(\"Removed gist1 not available in get list\", function () {",
+							"    pm.expect(jsonData.length).to.eql(1);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Removed gist1 not available in get list\", function () {",
+							"    pm.expect(pm.response.text()).to.not.include(environment.gist1id);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/users/{{userLogin}}/gists",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{userLogin}}",
+						"gists"
+					]
+				},
+				"description": "GET user gists"
+			},
+			"response": []
+		},
+		{
+			"name": "again delete gist1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e698e499-9bd7-4ca9-ae84-7191e456d749",
+						"exec": [
+							"pm.test(\"Gist deleted so again call return status code 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"Not found message\", function () {",
+							"    pm.expect(jsonData.message).to.eql(\"Not Found\");",
+							"});",
+							"pm.test(\"Link to documentation\", function () {",
+							"    pm.expect(jsonData.documentation_url).to.eql(\"https://developer.github.com/v3/gists/#delete-a-gist\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/gists/{{gist1id}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists",
+						"{{gist1id}}"
+					]
+				},
+				"description": "GET user gists"
+			},
+			"response": []
+		},
+		{
+			"name": "user gists not changed",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ca33b014-8f5f-4863-9a0c-bfa9f72ee16e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Try again change gist1 not effect to gist2\", function () {",
+							"    pm.expect(jsonData).to.eql(environment.listResponseWithGist2);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/users/{{userLogin}}/gists",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{userLogin}}",
+						"gists"
+					]
+				},
+				"description": "GET user gists"
+			},
+			"response": []
+		},
+		{
+			"name": "delete gist2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e698e499-9bd7-4ca9-ae84-7191e456d749",
+						"exec": [
+							"pm.test(\"Gist deleted and status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/gists/{{gist2id}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"gists",
+						"{{gist2id}}"
+					]
+				},
+				"description": "GET user gists"
+			},
+			"response": []
+		},
+		{
+			"name": "user gists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2eedfdb1-b42e-42eb-9e85-5ba185a5131b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status code name has string OK\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"// If you will test with new user without gists it's have sense:",
+							"// tests[\"Response with no gists\"] = responseBody === \"[]\";",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.test(\"After delete new gist1 and gist2 we return to start statement\", function () {",
+							"    pm.expect(jsonData).to.eql(environment.listResponseWithGist0);",
+							"});",
+							"",
+							"pm.test(\"Same count gist as before gist1 and gist2 creation\", function () {",
+							"    pm.expect(jsonData.length).to.eql(environment.startGistsCount);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/users/{{userLogin}}/gists",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"users",
+						"{{userLogin}}",
+						"gists"
+					]
+				},
+				"description": "GET user gists"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "{{user}}",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c0157f83-b355-4dd4-b164-6469e7af8f6a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "cd8fe49f-584e-42cb-ba1f-d3446a1dda18",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
