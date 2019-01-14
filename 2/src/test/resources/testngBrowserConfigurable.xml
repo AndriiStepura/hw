@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="TestNgSeleniumSuite" parallel="false">
+	<parameter name="environment" value="http://hw2.w2business.pl"></parameter>
+	<test name="TestNgSeleniumChromeTestWithFullScreenDemension">
+		<parameter name="browser" value="chrome"></parameter>
+		<parameter name="dimensionH" value="max"></parameter>
+		<parameter name="dimensionW" value="max"></parameter>
+		<parameter name="driverPath" value="src/test/resources/chromedriver.exe"></parameter>
+		<classes>
+			<class
+				name="testcase.TestUI" />
+		</classes>
+	</test>
+	<test name="TestNgSeleniumChromeTestWith412x732ScreenDemension">
+		<parameter name="browser" value="chrome"></parameter>
+		<parameter name="dimensionH" value="412"></parameter>
+		<parameter name="dimensionW" value="732"></parameter>
+		<parameter name="driverPath" value="src/test/resources/chromedriver.exe"></parameter>
+		<classes>
+			<class
+					name="testcase.TestUI" />
+		</classes>
+	</test>
+	<test name="TestNgSeleniumChromeTestWith768x1024ScreenDemension">
+		<parameter name="browser" value="chrome"></parameter>
+		<parameter name="dimensionH" value="768"></parameter>
+		<parameter name="dimensionW" value="1024"></parameter>
+		<parameter name="driverPath" value="src/test/resources/chromedriver.exe"></parameter>
+		<classes>
+			<class
+					name="testcase.TestUI" />
+		</classes>
+	</test>
+</suite>
