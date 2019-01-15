@@ -409,7 +409,7 @@
 							"});",
 							"",
 							"pm.test(\"Removed gist1 not available in get list\", function () {",
-							"    pm.expect(jsonData.length).to.eql(1);",
+							"    pm.expect(jsonData.length).to.eql(parseInt(environment.startGistsCount+1));",
 							"});",
 							"",
 							"",
@@ -509,7 +509,9 @@
 							"    pm.expect(jsonData).to.eql(environment.listResponseWithGist2);",
 							"});",
 							"",
-							""
+							"pm.test(\"Removed gist1 not available in get list\", function () {",
+							"    pm.expect(jsonData.length).to.eql(parseInt(environment.startGistsCount+1));",
+							"});"
 						],
 						"type": "text/javascript"
 					}
